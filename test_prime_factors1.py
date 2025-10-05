@@ -7,7 +7,11 @@ def prime_factors(number):
     Raises:
         TypeError: number nie jest INT
         ValueError: number jest <0 lub =0 lub =1"""
-    pass
+    # weryfikacja czy jest intem"
+    if not isinstance(number, int):
+        raise TypeError("błędny typ danych, oczekiwano int")
+    if number < 2:
+        raise ValueError("błędna wartość")
 
 
 test_cases = {
