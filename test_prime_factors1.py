@@ -12,6 +12,8 @@ def prime_factors(number):
         raise TypeError("błędny typ danych, oczekiwano int")
     if number < 2:
         raise ValueError("błędna wartość")
+    if number > 1:
+        return [number]
 
 
 test_cases = {
