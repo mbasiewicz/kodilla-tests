@@ -12,8 +12,17 @@ def prime_factors(number):
         raise TypeError("błędny typ danych, oczekiwano int")
     if number < 2:
         raise ValueError("błędna wartość")
-    if number > 1:
-        return [number]
+
+    divisor = 2
+    factors = []
+    while number > 1:
+        if number % divisor == 0:
+            factors.append(divisor)
+            number = number // divisor
+        else:
+            divisor += 1
+
+    return factors
 
 
 test_cases = {
@@ -26,6 +35,7 @@ test_cases = {
     6: [2, 3],
     12: [2, 2, 3],
     100: [2, 2, 5, 5],
+    3958159172: [2, 2, 11, 2347, 38329],
     # błędne typy danych (TypeError)
     3.5: TypeError,
     "dwa": TypeError,
