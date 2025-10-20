@@ -1,27 +1,67 @@
-from prime_factors import prime_factors_result
+def prime_factors(number):
+    """Funkcja rozkłada podaną liczbę na czynniki
+    Args:
+        number: dane wejściowe do funkcji (INT)
+    Returns:
+        list: lista z wypisanymi czynnikami
+    Raises:
+        TypeError: number nie jest INT
+        ValueError: number jest <0 lub =0 lub =1"""
+    # weryfikacja czy jest intem"
+    if not isinstance(number, int):
+        raise TypeError("błędny typ danych, oczekiwano int")
+    if number < 2:
+        raise ValueError("błędna wartość")
+
+    divisor = 2
+    factors = []
+    while number > 1:
+        if number % divisor == 0:
+            factors.append(divisor)
+            number = number // divisor
+        else:
+            divisor += 1
+
+    return factors
 
 
-def test_prime_factors_result():
-    """sprawdza czy można zaimportować funkcję"""
-    try:
-        from prime_factors import prime_factors_result
+test_cases = {
+    # liczby pierwsze
+    2: [2],
+    13: [13],
+    73: [73],
+    # liczby złożone
+    4: [2, 2],
+    6: [2, 3],
+    12: [2, 2, 3],
+    100: [2, 2, 5, 5],
+    3958159172: [2, 2, 11, 2347, 38329],
+    # błędne typy danych (TypeError)
+    3.5: TypeError,
+    "dwa": TypeError,
+    (10, 20): TypeError,
+    # błędne wartości (ValueError)
+    0: ValueError,
+    1: ValueError,
+    -1: ValueError,
+}
 
-        assert callable(prime_factors_result), "prime_factors_result not callable"
-    except ImportError as error:
-        assert False, error
 
-
-def test_prime_number():
-    """dla liczby pierwszej zwraca listę z tą liczbą"""
-    result = prime_factors_result(2)
-    assert result == [2], f"Expected [2], got {result}"
-
-
-if __name__ == "__main__":
-    for test in (test_prime_factors_result, test_prime_number):
-        print(f"{test.__name__}: ", end="")
+passed = 0
+for number, expect_result in test_cases.items():
+    if isinstance(expect_result, type) and issubclass(expect_result, Exception):
         try:
-            test()
-            print("OK")
-        except AssertionError as error:
-            print(error)
+            result = prime_factors(number)
+            print(f"test FAIL - {number!r} nie rzucił błędu")
+        except (TypeError, ValueError):
+            print(f"test OK - {number!r}")
+            passed += 1
+    else:
+        result = prime_factors(number)
+        if result == expect_result:
+            print(f"test OK - {number!r}")
+            passed += 1
+        else:
+            print(f"test FAIL - {number!r}")
+
+print(f"Z {len(test_cases)} testów, {passed} pozytywnych")
